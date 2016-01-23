@@ -35,7 +35,7 @@ import org.openflow.util.HexString;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-//Complex Topology, Firewall for Week 7 Sign Off
+//Complex Topology, Firewall for Week 7 Sign-Off
 public class Practical implements IFloodlightModule, IOFMessageListener {
 
 	protected static Logger log = LoggerFactory.getLogger(Practical.class);
