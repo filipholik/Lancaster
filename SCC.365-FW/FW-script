@@ -1,0 +1,21 @@
+#!/bin/sh
+# Script for inserting rules into DPCTL FW - Week 7 Sign off. 
+
+#Delete existing flows
+echo Deleting existing flows... 
+dpctl del-flows tcp:127.0.0.1:6634
+
+#Allow the traffic
+echo Inserting normal switch flows...
+dpctl add-flow tcp:127.0.0.1:6634 in_port=*,priority=10,idle_timeout=600,actions=normal
+
+#Drop the traffic, priority has to be higher
+echo Inserting drop flows...
+dpctl add-flow tcp:127.0.0.1:6634 dl_src=00:00:00:00:00:01,priority=20,idle_timeout=600,actions=output:-1
+dpctl add-flow tcp:127.0.0.1:6634 nw_dst=10.0.0.2,priority=20,idle_timeout=600,actions=output:-1
+dpctl add-flow tcp:127.0.0.1:6634 dl_src=00:00:00:00:00:03,dl_dst=00:00:00:00:00:06,dl_type=0x0800,idle_timeout=600,priority=20,actions=output:-1
+dpctl add-flow tcp:127.0.0.1:6634 tp_src=80,dl_type=0x0800,nw_proto=1,priority=20,idle_timeout=600,actions=output:-1
+
+#Print Flow Table
+echo Printing Flow Table...
+dpctl dump-flows tcp:127.0.0.1:6634
